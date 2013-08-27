@@ -1,21 +1,41 @@
 class Temperature
-  attr_accessor :value ,:units
 
   def initialize(hash={})
-      @value=hash.value
-      @units=hash.key
+      hash.each {|k,v| @units, @value = k, v }
   end
 
   def to_fahrenheit()
-     if @units == :c
-      (@value*9/5) + 32 if @units == :c
-     else
-      @value
-     end
+    @units == :c ? (@value*9/5) + 32 : @value
   end
 
-  # def to_celsius(num, p)
-  #   @value
-  # end
+  def to_celsius()
+    @units == :f ? (@value-32)*5/9 : @value
+  end
+
+  def self.in_celsius(value)
+    Temperature.new(:c => value)
+  end
+
+  def self.in_fahrenheit(value)
+    Temperature.new(:f => value)
+  end
+end
+
+class Celsius < Temperature
+  
+  def initialize(value)
+    @value=value
+    @units = :c
+  end
 
 end
+
+class Fahrenheit < Temperature
+
+  def initialize(value)
+    @value=value
+    @units = :f
+  end
+
+end
+
